@@ -23,8 +23,8 @@ RUN  mkdir -pv ${package_path} && \
 #依赖安装
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install epel-release && \
-    yum -y groupinstall "Development tools" &&  \
-    yum install -y bash-completion libmcrypt freetype-devel libpng-devel gd-devel libcurl-devel libjpeg-turbo-devel libxslt-devel zlib-devel libxml2-devel libzip-devel libiconv-devel bzip2-devel libmcrypt-devel openssl openssl-devel
+    yum install -y gcc gcc-c++ make perl-ExtUtils-MakeMaker  zlib zlib-devel pcre pcre-devel libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel  curl curl-devel  openssl openssl-devel
+
 
 # libzip 依赖安装
 ADD ${LIBZIP_VERSION}.tar.gz ${package_path}
