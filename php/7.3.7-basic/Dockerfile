@@ -8,17 +8,20 @@ ENV package_path /www/packages/
 ENV source_path /www/server/source/
 ENV server_path /www/server/
 ENV data_path /www/data/
+ENV config_path /www/data/config/
 
 ENV PHP_VERSION php-7.3.7
 ENV PHP_NAME php
 ENV LIBZIP_VERSION libzip-1.2.0
+ENV ENV_PROD prod
 
 
 #初始化目录
 RUN  mkdir -pv ${package_path} && \
         mkdir -pv ${source_path} && \
         mkdir -pv ${server_path} && \
-        mkdir -pv ${data_path}
+        mkdir -pv ${data_path} && \
+        mkdir -pv ${config_path}
 
 #依赖安装
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
@@ -66,7 +69,6 @@ RUN cd ${package_path}${PHP_VERSION} && \
 
 #初始化php
 RUN ln -sv ${source_path}${PHP_VERSION}  ${server_path}/${PHP_NAME}   && \
-    chmod -R a+w  ${source_path}${PHP_VERSION}/var/log/ && \
     [ -d ${source_path}${PHP_VERSION}/conf ] || mkdir ${source_path}${PHP_VERSION}/conf && \
     [ -d ${source_path}${PHP_VERSION}/conf.d ] || mkdir ${source_path}${PHP_VERSION}/conf.d && \
     [ -f ${source_path}${PHP_VERSION}/conf/php.ini ] || cp ${package_path}${PHP_VERSION}/php.ini-production ${source_path}${PHP_VERSION}/conf/php.ini && \
@@ -75,24 +77,31 @@ RUN ln -sv ${source_path}${PHP_VERSION}  ${server_path}/${PHP_NAME}   && \
     [ -f ${source_path}${PHP_VERSION}/etc/php-fpm.d/www.conf ] || cp ${source_path}${PHP_VERSION}/etc/php-fpm.d/www.conf.default ${source_path}${PHP_VERSION}/etc/php-fpm.d/www.conf && \
     [ -f /usr/local/bin/php ] || ln -sv ${server_path}/${PHP_NAME}/bin/php /usr/local/bin/
 
-COPY dev/php.ini ${package_path}dev/
-COPY dev/www.conf ${package_path}dev/
+COPY dev/php.ini ${config_path}dev/
+COPY dev/www.conf ${config_path}dev/
 
-COPY prod/php.ini ${package_path}prod/
-COPY prod/www.conf ${package_path}prod/
+COPY prod/php.ini ${config_path}prod/
+COPY prod/www.conf ${config_path}prod/
 
-ARG ENV_PROD=prod
 
-RUN if [ ${ENV_PROD} = prod ]; then \
-        cp -rf ${package_path}prod/php.ini ${source_path}${PHP_VERSION}/conf/; \
-        cp -rf ${package_path}prod/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
-else \
-        cp -rf ${package_path}dev/php.ini ${source_path}${PHP_VERSION}/conf/; \
-        cp -rf ${package_path}dev/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
-fi
 
-RUN yum clean all && rm -fr ${package_path}
+
+#RUN if [ ${ENV_PROD} = prod ]; then \
+#        cp -rf ${config_path}prod/php.ini ${source_path}${PHP_VERSION}/conf/; \
+#        cp -rf ${config_path}prod/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
+#else \
+#        cp -rf ${config_path}dev/php.ini ${source_path}${PHP_VERSION}/conf/; \
+#        cp -rf ${config_path}dev/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
+#fi
+
+RUN     chmod -R a+w  ${source_path}${PHP_VERSION}/var/log/ && \
+        chmod -R a+w  ${source_path}${PHP_VERSION}/conf/ && \
+        chmod -R a+w ${source_path}${PHP_VERSION}/etc/php-fpm.d/ && \
+        yum clean all && rm -fr ${package_path}
 
 EXPOSE 9000
 CMD ${server_path}/${PHP_NAME}/sbin/php-fpm -F
+
+ADD entrypoint.sh /bin/
+ENTRYPOINT ["/bin/entrypoint.sh"]
 
