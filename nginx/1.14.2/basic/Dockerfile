@@ -66,7 +66,7 @@ RUN ln -sv ${source_path}${NGINX_VERSION}  ${server_path}/${NGINX_NAME} && \
 
 
 ADD conf/nginx.conf  ${source_path}/${NGINX_VERSION}/conf/
-ADD conf/server/default.conf  ${source_path}/${NGINX_VERSION}/conf/conf.d/
+ADD conf/conf.d/default.conf  ${source_path}/${NGINX_VERSION}/conf/conf.d/
 
 EXPOSE 80 443
 RUN id www || useradd -r -M -s /sbin/nologin www || usermod -u 1000 www
