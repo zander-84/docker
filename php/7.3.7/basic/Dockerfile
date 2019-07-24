@@ -13,7 +13,7 @@ ENV config_path /www/data/config/
 ENV PHP_VERSION php-7.3.7
 ENV PHP_NAME php
 ENV LIBZIP_VERSION libzip-1.2.0
-ENV ENV_PROD prod
+ENV ENV prod
 
 
 #初始化目录
@@ -84,16 +84,6 @@ COPY prod/php.ini ${config_path}prod/
 COPY prod/www.conf ${config_path}prod/
 
 
-
-
-#RUN if [ ${ENV_PROD} = prod ]; then \
-#        cp -rf ${config_path}prod/php.ini ${source_path}${PHP_VERSION}/conf/; \
-#        cp -rf ${config_path}prod/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
-#else \
-#        cp -rf ${config_path}dev/php.ini ${source_path}${PHP_VERSION}/conf/; \
-#        cp -rf ${config_path}dev/www.conf ${source_path}${PHP_VERSION}/etc/php-fpm.d/; \
-#fi
-
 RUN     chmod -R a+w  ${source_path}${PHP_VERSION}/var/log/ && \
         chmod -R a+w  ${source_path}${PHP_VERSION}/conf/ && \
         chmod -R a+w ${source_path}${PHP_VERSION}/etc/php-fpm.d/ && \
@@ -101,6 +91,8 @@ RUN     chmod -R a+w  ${source_path}${PHP_VERSION}/var/log/ && \
 
 EXPOSE 9000
 CMD ${server_path}/${PHP_NAME}/sbin/php-fpm -F
+
+RUN id www || useradd -r -M -s /sbin/nologin www || usermod -u 1000 www
 
 ADD entrypoint.sh /bin/
 ENTRYPOINT ["/bin/entrypoint.sh"]
