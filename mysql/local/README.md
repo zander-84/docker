@@ -15,8 +15,8 @@ chown -R mysql:mysql /www/data/mysql/
 ```
 docker run --name mysql \
 -v /www/data/mysql2/:/www/data/mysql/ \
--v /mydata/code/docker/mysql/5.7.27/local/conf/my.cnf:/etc/mysql/my.cnf \
--p 3306:3306 --user $(id -u mysql) \
+-v /mydata/code/docker/mysql/local/conf/my.cnf:/etc/mysql/my.cnf \
+-p 3306:3306 --user $(id -u mysql) --rm  \
 -d mysql:5.7.27
 ```
 

@@ -4,7 +4,7 @@ id www ||  useradd -r -M -s /sbin/nologin www
 ```
 #启动
 ```
-docker container run  --name mynginx -itd --network host -P --user $(id -u www)   \
+docker container run  --name mynginx -itd --network host -P --user $(id -u www) --rm  \
 -v /mydata/code/:/mydata/code/ \
 -v /mydata/code/docker/nginx/local/conf/conf.d:/www/server/nginx/conf/conf.d/   \
 -v /mydata/code/docker/nginx/local/conf/ssl:/www/server/nginx/conf/ssl/   \
