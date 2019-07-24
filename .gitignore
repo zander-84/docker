@@ -1,5 +1,5 @@
 # phpstorm project files
 .idea
-nginx/local/conf.d/
+nginx/local/conf/conf.d/
 php/local/conf/
 php/local/php-fpm.d/
