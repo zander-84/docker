@@ -15,7 +15,7 @@ chown -R mysql:mysql /www/data/mysql/
 ```
 docker run --name mysql \
 -v /www/data/mysql/:/www/data/mysql/ \
--v /mydata/code/docker/mysql/local/conf/my.cnf:/etc/mysql/my.cnf \
+-v /mydata/code/docker/mysql/5.7/conf/my.cnf:/etc/mysql/my.cnf \
 -p 3306:3306 --user $(id -u mysql) --rm  \
 -d mysql:5.7.27
 ```
@@ -24,7 +24,7 @@ docker run --name mysql \
 ```
 docker run --name mysql \
 -v /www/data/mysql/:/www/data/mysql/ \
--v /mydata/code/docker/mysql/local/conf/my.cnf:/etc/mysql/my.cnf \
+-v /mydata/code/docker/mysql/5.7/conf/my.cnf:/etc/mysql/my.cnf \
 -e MYSQL_ROOT_PASSWORD=123456  \
 -p 3306:3306 --user $(id -u mysql) --rm  \
 -d mysql:5.7.27
@@ -33,3 +33,10 @@ docker run --name mysql \
 
 #DOC
 ```https://hub.docker.com/_/mysql?tab=description```
+
+#进入虚拟机
+```
+[root@node1 ~]# docker exec -it mysql bash
+$ mysql -u root -h 127.0.0.1 -p
+$ mysql -u root -h localhost -S /tmp/mysql.sock -p
+```
