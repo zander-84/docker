@@ -13,7 +13,8 @@ ENV config_path /www/data/config/
 ENV PHP_VERSION php-7.3.7
 ENV PHP_NAME php
 ENV LIBZIP_VERSION libzip-1.2.0
-ENV ENV prod
+
+#ENV ENV prod
 
 
 #初始化目录
@@ -26,7 +27,7 @@ RUN  mkdir -pv ${package_path} && \
 #依赖安装
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install epel-release && \
-    yum install -y gcc gcc-c++ make perl-ExtUtils-MakeMaker  zlib zlib-devel pcre pcre-devel libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel  curl curl-devel  openssl openssl-devel
+    yum install -y gcc gcc-c++ make perl-ExtUtils-MakeMaker  zlib zlib-devel pcre pcre-devel libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel libcurl  curl curl-devel  openssl openssl-devel
 
 
 # libzip 依赖安装

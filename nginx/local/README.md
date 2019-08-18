@@ -4,10 +4,11 @@ id www ||  useradd -r -M -s /sbin/nologin www
 ```
 #启动
 ```
-docker container run  --name mynginx -itd --network host -P --user $(id -u www) --rm  \
--v /mydata/code/:/mydata/code/ \
--v /mydata/code/docker/nginx/local/conf/conf.d:/www/server/nginx/conf/conf.d/   \
--v /mydata/code/docker/nginx/local/conf/ssl:/www/server/nginx/conf/ssl/   \
+docker container run  --name mynginx -itd --network host -P --user $(id -u www) --rm --privileged \
+-v /code/:/code/ \
+-v /code/docker/nginx/local/conf/conf.d:/www/server/nginx/conf/conf.d/   \
+-v /code/docker/nginx/local/conf/ssl:/www/server/nginx/conf/ssl/   \
+-v /code/docker/nginx/local/conf/nginx.conf:/www/server/nginx/conf/nginx.conf   \
 registry.cn-hangzhou.aliyuncs.com/zander84/mynginx:v1.14.2
 ```
 

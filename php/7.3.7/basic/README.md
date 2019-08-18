@@ -1,6 +1,7 @@
 ## Init
 ```
-id www ||  useradd -r -M -s /sbin/nologin www
+id www ||  useradd -r -M -s /sbin/nologin www;
+sysctl vm.nr_hugepages=512;
 ```
 
 

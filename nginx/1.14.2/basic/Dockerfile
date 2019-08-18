@@ -49,7 +49,7 @@ RUN cd ${package_path}${NGINX_VERSION} && \
 
 
 #初始化
-RUN ln -sv ${source_path}${NGINX_VERSION}  ${server_path}/${NGINX_NAME} && \
+RUN ln -sv ${source_path}${NGINX_VERSION}  ${server_path}${NGINX_NAME} && \
     [ -d ${source_path}${NGINX_VERSION}/conf/conf.d/ ] || mkdir -pv ${source_path}${NGINX_VERSION}/conf/conf.d/ && \
     [ -d ${source_path}${NGINX_VERSION}/client_body_temp/ ] || mkdir -pv ${source_path}${NGINX_VERSION}/client_body_temp/ && \
     [ -d ${source_path}${NGINX_VERSION}/proxy_temp/ ] || mkdir -pv ${source_path}${NGINX_VERSION}/proxy_temp/ && \
@@ -62,7 +62,7 @@ RUN ln -sv ${source_path}${NGINX_VERSION}  ${server_path}/${NGINX_NAME} && \
     chmod -R a+w ${source_path}${NGINX_VERSION}/fastcgi_temp/ && \
     chmod -R a+w ${source_path}${NGINX_VERSION}/uwsgi_temp/ && \
     chmod -R a+w ${source_path}${NGINX_VERSION}/scgi_temp/ && \
-    chown root ${server_path}/${NGINX_NAME}/sbin/nginx && chmod u+s ${server_path}/${NGINX_NAME}/sbin/nginx
+    chown root ${server_path}${NGINX_NAME}/sbin/nginx && chmod u+s ${server_path}${NGINX_NAME}/sbin/nginx
 
 
 ADD conf/nginx.conf  ${source_path}/${NGINX_VERSION}/conf/
@@ -71,7 +71,7 @@ ADD conf/conf.d/default.conf  ${source_path}/${NGINX_VERSION}/conf/conf.d/
 EXPOSE 80 443
 RUN id www || useradd -r -M -s /sbin/nologin www || usermod -u 1000 www
 
-CMD ${server_path}/${NGINX_NAME}/sbin/nginx -g 'daemon off;'
+CMD ${server_path}${NGINX_NAME}/sbin/nginx -g 'daemon off;'
 
 
 
