@@ -4,4 +4,5 @@ nginx/local/conf/conf.d/
 php/local/conf/
 php/local/php-fpm.d/
 redis/local/conf/
+rabbitmq/local/conf/
 local/
