@@ -1,0 +1,65 @@
+version: "3"
+services:
+
+  http:
+    image: registry.cn-hangzhou.aliyuncs.com/zander84/mynginx:v1.14.2
+    restart: always
+    network_mode: host
+    user: www
+    privileged: true
+    volumes:
+      - /code/:/code/
+      - /code/docker/nginx/local/conf/conf.d:/www/server/nginx/conf/conf.d/
+      - /code/docker/nginx/local/conf/ssl:/www/server/nginx/conf/ssl/
+      - /code/docker/nginx/local/conf/nginx.conf:/www/server/nginx/conf/nginx.conf
+    container_name: mynginx1.14.2
+
+  php:
+    image: registry.cn-hangzhou.aliyuncs.com/zander84/myphp:v7.3.8
+    restart: always
+    network_mode: host
+    user: www
+    volumes:
+      - /code/:/code/
+      - /code/docker/php/local/php-fpm.d/www.conf:/www/server/php/etc/php-fpm.d/www.conf
+      - /code/docker/php/local/conf/php.ini:/www/server/php/conf/php.ini
+    container_name: myphp7.3.8
+
+  mysql57:
+    image: mysql:5.7.27
+    restart: always
+    ports:
+      - "3306:3306"
+    user: mysql
+    volumes:
+      - /www/data/mysql/:/www/data/mysql/
+      - /code/docker/mysql/5.7/conf/my.cnf:/etc/mysql/my.cnf
+    container_name: mysql57
+
+  mysql8:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3307:3306"
+    user: mysql
+    volumes:
+      - /www/data/mysql8/:/www/data/mysql/
+      - /code/docker/mysql/8.0/conf/my.cnf:/etc/mysql/my.cnf
+    container_name: mysql8
+
+  redis5:
+    image: registry.cn-hangzhou.aliyuncs.com/zander84/myredis:5.0.5
+    restart: always
+    user: redis
+    privileged: true
+    ports:
+      - "6379:6379"
+    volumes:
+      - /code/docker/redis/local/conf/redis505.conf:/usr/local/etc/redis/redis.conf
+      - /www/data/redis:/var/lib/redis
+      - /www/data/redis:/data
+    sysctls:
+       net.core.somaxconn: "65535"
+    container_name: myredis5
+
+

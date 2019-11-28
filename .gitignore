@@ -6,3 +6,5 @@ php/local/php-fpm.d/
 redis/local/conf/
 rabbitmq/local/conf/
 local/
+nsq/local
+mongo/local
