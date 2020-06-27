@@ -16,6 +16,7 @@ chown -R mysql:mysql /www/data/mysql8/
 docker run --name mysql8 \
 -v /www/data/mysql8/:/www/data/mysql/ \
 -v /code/docker/mysql/8.0/conf/my.cnf:/etc/mysql/my.cnf \
+-v /code/docker/mysql/8.0/conf/myinit.sql:/etc/mysql/myinit.sql \
 -p 3306:3306 --user $(id -u mysql) --rm  \
 -d mysql:8.0
 ```
@@ -25,6 +26,7 @@ docker run --name mysql8 \
 docker run --name mysql8 \
 -v /www/data/mysql8/:/www/data/mysql/ \
 -v /code/docker/mysql/8.0/conf/my.cnf:/etc/mysql/my.cnf \
+-v /code/docker/mysql/8.0/conf/myinit.sql:/etc/mysql/myinit.sql \
 -e MYSQL_ROOT_PASSWORD=123456  \
 -p 3306:3306 --user $(id -u mysql) --rm  \
 -d mysql:8.0
